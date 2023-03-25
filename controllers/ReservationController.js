@@ -1,8 +1,24 @@
 const Reservation = require("../models/Reservation");
 const router = require("express").Router();
 
+// Middleware for verifying JWT tokens
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  //console.log(token);
+  if (!token) {
+    return res.status(401).json({ message: "Token is required" });
+  } else {
+    try {
+      token === process.env.JWT_TOKEN && next();
+    } catch (err) {
+      console.error(err);
+      res.status(401).json({ message: "Token is invalid" });
+    }
+  }
+};
+
 // Controller function to get the reservations information
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
     const reservations = await Reservation.find()
       .populate("flight")
