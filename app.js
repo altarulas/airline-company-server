@@ -6,7 +6,7 @@ const cors = require("cors");
 // Create a new Express application
 const app = express();
 
-// Setting default API version
+// Setting default API version and port number
 const PORT = 3002;
 const API_VERSION = "/api/v1";
 

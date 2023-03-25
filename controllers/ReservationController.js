@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
     res.status(500).send("Error retrieving reservations");
   }
 });
+("");
 
 // Controller function to define a route for creating a new reservation
 router.post("/", async (req, res) => {
@@ -21,6 +22,8 @@ router.post("/", async (req, res) => {
     const reservation = new Reservation({
       user,
       flight,
+      from: flight.from,
+      to: flight.to,
       date: flight.date,
       flightNo: flight.flightNo,
       price: flight.price,

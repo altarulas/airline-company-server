@@ -11,9 +11,26 @@ const reservationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Flight",
   },
-  date: String,
-  flightNo: String,
-  price: String,
+  from: {
+    type: String,
+    required: true,
+  },
+  to: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  flightNo: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Reservation", reservationSchema);
