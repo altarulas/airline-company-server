@@ -2,6 +2,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // Create a new Express application
 const app = express();
@@ -44,7 +46,29 @@ app.use(API_VERSION + "/flights", FlightController);
 const ReservationController = require("./controllers/ReservationController");
 app.use(API_VERSION + "/reservations", ReservationController);
 
+// Middleware for verifying JWT tokens
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ message: "Token is required" });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+    req.userId = decoded.userId;
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: "Token is invalid" });
+  }
+};
+
+// Apply middleware to all routes that require token authentication
+app.use(API_VERSION + "/flights", verifyToken);
+app.use(API_VERSION + "/reservations", verifyToken);
+
 // Start the server and listen for incoming requests
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}${API_VERSION}`);
 });
+
+console.log(process.env.JWT_TOKEN);
