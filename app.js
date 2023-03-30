@@ -9,7 +9,7 @@ require("dotenv").config();
 const app = express();
 
 // Setting default API version and port number
-const PORT = 3002;
+const PORT = 3000;
 const API_VERSION = "/api/v1";
 
 // Enable cors
