@@ -32,7 +32,7 @@ router.get("/", verifyToken, async (req, res) => {
 ("");
 
 // Controller function to define a route for creating a new reservation
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const { user, flight } = req.body;
     const reservation = new Reservation({
@@ -42,6 +42,7 @@ router.post("/", async (req, res) => {
       to: flight.to,
       date: flight.date,
       flightNo: flight.flightNo,
+      numOfSeats,
       price: flight.price,
     });
     const savedReservation = await reservation.save();

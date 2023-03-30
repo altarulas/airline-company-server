@@ -3,6 +3,22 @@ const router = express.Router();
 
 const Flight = require("../models/Flight");
 
+// Middleware for verifying JWT tokens
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  //console.log(token);
+  if (!token) {
+    return res.status(401).json({ message: "Token is required" });
+  } else {
+    try {
+      token === process.env.JWT_TOKEN && next();
+    } catch (err) {
+      console.error(err);
+      res.status(401).json({ message: "Token is invalid" });
+    }
+  }
+};
+
 // Controller function to get flights with pagination
 router.get("/", async (req, res) => {
   try {
@@ -40,7 +56,7 @@ router.get("/", async (req, res) => {
 });
 
 // Controller function to define a route for creating a new flight
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const newFlight = new Flight(req.body);
     const savedFlight = await newFlight.save();
@@ -48,6 +64,24 @@ router.post("/", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error creating flight");
+  }
+});
+
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const flight = await Flight.findById(req.params.id);
+
+    if (!flight) {
+      return res.status(404).send("Flight not found");
+    }
+
+    flight.availableSeats = req.body.availableSeats;
+    const updatedFlight = await flight.save();
+
+    res.status(200).json(updatedFlight);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating flight");
   }
 });
 

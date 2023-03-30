@@ -27,6 +27,10 @@ const reservationSchema = new Schema({
     type: String,
     required: true,
   },
+  numOfSeats: {
+    type: String,
+    required: true,
+  },
   price: {
     type: String,
     required: true,
