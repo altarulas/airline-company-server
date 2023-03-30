@@ -9,7 +9,7 @@ require("dotenv").config();
 const app = express();
 
 // Setting default API version and port number
-const PORT = 3000;
+const PORT = process.env.PORT || 3002;
 const API_VERSION = "/api/v1";
 
 // Enable cors
@@ -48,7 +48,5 @@ app.use(API_VERSION + "/reservations", ReservationController);
 
 // Start the server and listen for incoming requests
 app.listen(PORT, () => {
-  console.log(
-    `Server is running on https://se4458-midterm.azurewebsites.net${API_VERSION}`
-  );
+  console.log(`Server is running on http://localhost:${PORT}${API_VERSION}`);
 });
