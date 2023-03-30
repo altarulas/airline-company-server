@@ -20,13 +20,10 @@ app.use(express.json());
 
 // Connect to the MongoDB database
 mongoose
-  .connect(
-    "mongodb+srv://altar:123asd123@my-cluster.cx9jo56.mongodb.net/?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("db connect successfully");
   })
