@@ -2,14 +2,21 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
-  user: {
-    // updated this line
-    type: Schema.Types.ObjectId,
-    ref: "User",
+  userId: {
+    type: String,
+    required: true,
   },
-  flight: {
-    type: Schema.Types.ObjectId,
-    ref: "Flight",
+  name: {
+    type: String,
+    required: true,
+  },
+  surname: {
+    type: String,
+    required: true,
+  },
+  flightId: {
+    type: String,
+    required: true,
   },
   from: {
     type: String,
@@ -27,11 +34,11 @@ const reservationSchema = new Schema({
     type: String,
     required: true,
   },
-  numOfSeats: {
+  price: {
     type: String,
     required: true,
   },
-  price: {
+  availableSeats: {
     type: String,
     required: true,
   },

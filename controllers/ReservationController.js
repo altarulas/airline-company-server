@@ -1,5 +1,6 @@
 const Reservation = require("../models/Reservation");
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
@@ -23,9 +24,7 @@ const verifyToken = (req, res, next) => {
 // Controller function to get the reservations information
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const reservations = await Reservation.find()
-      .populate("flight")
-      .populate("user");
+    const reservations = await Reservation.find();
     res.status(200).json(reservations);
   } catch (err) {
     console.error(err);
@@ -35,18 +34,32 @@ router.get("/", verifyToken, async (req, res) => {
 ("");
 
 // Controller function to define a route for creating a new reservation
+// Controller function to define a route for creating a new reservation
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const { user, flight } = req.body;
+    const {
+      userId,
+      name,
+      surname,
+      flightId,
+      from,
+      to,
+      date,
+      flightNo,
+      price,
+      availableSeats,
+    } = req.body;
     const reservation = new Reservation({
-      user,
-      flight,
-      from: flight.from,
-      to: flight.to,
-      date: flight.date,
-      flightNo: flight.flightNo,
-      numOfSeats,
-      price: flight.price,
+      userId,
+      name,
+      surname,
+      flightId,
+      from,
+      to,
+      date,
+      flightNo,
+      price,
+      availableSeats,
     });
     const savedReservation = await reservation.save();
     res.status(201).json(savedReservation);
