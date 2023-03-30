@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Token is required" });
   } else {
     try {
-      token === process.env.JWT_TOKEN && next();
+      token === JWT_TOKEN && next();
     } catch (err) {
       console.error(err);
       res.status(401).json({ message: "Token is invalid" });

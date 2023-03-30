@@ -16,7 +16,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Token is required" });
   } else {
     try {
-      token === process.env.JWT_TOKEN && next();
+      token === JWT_TOKEN && next();
     } catch (err) {
       console.error(err);
       res.status(401).json({ message: "Token is invalid" });
@@ -52,7 +52,7 @@ router.post("/token", async (req, res) => {
       return res.status(401).send("Invalid password");
     }
 
-    const token = process.env.JWT_TOKEN;
+    const token = JWT_TOKEN;
 
     // Return the token to the client
     res.status(200).json({ token });
