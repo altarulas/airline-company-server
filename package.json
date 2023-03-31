@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm build",
-    "start": "node app.js"
+    "serve": "node dist/app.js"
   },
   "repository": {
     "type": "git",
