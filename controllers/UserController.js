@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env.local" });
+
 const User = require("../models/User");
 
 // Middleware for verifying JWT tokens
@@ -45,7 +48,7 @@ router.post("/token", async (req, res) => {
       return res.status(401).send("Invalid password");
     }
 
-    const token = JWT_TOKEN;
+    const token = process.env.JWT_TOKEN;
 
     // Return the token to the client
     res.status(200).json({ token });

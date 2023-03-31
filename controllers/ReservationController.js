@@ -1,6 +1,10 @@
-const Reservation = require("../models/Reservation");
 const express = require("express");
 const router = express.Router();
+
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env.local" });
+
+const Reservation = require("../models/Reservation");
 
 // Middleware for verifying JWT tokens
 const verifyToken = (req, res, next) => {

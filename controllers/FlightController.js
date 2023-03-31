@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env.local" });
+
 const Flight = require("../models/Flight");
 
 // Middleware for verifying JWT tokens

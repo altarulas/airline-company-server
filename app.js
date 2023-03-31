@@ -1,7 +1,8 @@
 // Import necessary modules
 const express = require("express");
 const mongoose = require("mongoose");
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env.local" });
 const cors = require("cors");
 
 // Create a new Express application
