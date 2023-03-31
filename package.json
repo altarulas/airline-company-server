@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npm build",
     "serve": "node dist/app.js"
   },
   "repository": {
