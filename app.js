@@ -1,9 +1,8 @@
 // Import necessary modules
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const cors = require("cors");
 
 // Create a new Express application
 const app = express();
@@ -20,18 +19,15 @@ app.use(express.json());
 
 // Connect to the MongoDB database
 mongoose
-  .connect(
-    "mongodb+srv://altar:123asd123@my-cluster.cx9jo56.mongodb.net/?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
-    console.log("db connect successfully");
+    console.log("db connected successfully");
   })
   .catch((error) => {
-    console.log(error);
+    console.log("db connection failed", error);
   });
 
 // Importing the User controller

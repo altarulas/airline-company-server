@@ -18,6 +18,10 @@ const reservationSchema = new Schema({
     type: String,
     required: true,
   },
+  flightNo: {
+    type: String,
+    required: true,
+  },
   from: {
     type: String,
     required: true,
@@ -30,15 +34,11 @@ const reservationSchema = new Schema({
     type: String,
     required: true,
   },
-  flightNo: {
-    type: String,
-    required: true,
-  },
   price: {
     type: String,
     required: true,
   },
-  availableSeats: {
+  numOfSeats: {
     type: String,
     required: true,
   },

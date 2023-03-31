@@ -1,12 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
-
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
 // Middleware for verifying JWT tokens
 const verifyToken = (req, res, next) => {
@@ -16,7 +11,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Token is required" });
   } else {
     try {
-      token === JWT_TOKEN && next();
+      token === process.env.JWT_TOKEN && next();
     } catch (err) {
       console.error(err);
       res.status(401).json({ message: "Token is invalid" });
@@ -46,9 +41,7 @@ router.post("/token", async (req, res) => {
       return res.status(404).send("User not found");
     }
 
-    // Compare the password with the hashed password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (password !== user.password) {
       return res.status(401).send("Invalid password");
     }
 
@@ -73,15 +66,12 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Create a new user
     const newUser = new User({
       name,
       surname,
       username,
-      password: hashedPassword,
+      password,
     });
     await newUser.save();
 

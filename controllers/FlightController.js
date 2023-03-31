@@ -3,18 +3,14 @@ const router = express.Router();
 
 const Flight = require("../models/Flight");
 
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
 // Middleware for verifying JWT tokens
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
-  //console.log(token);
   if (!token) {
     return res.status(401).json({ message: "Token is required" });
   } else {
     try {
-      token === JWT_TOKEN && next();
+      token === process.env.JWT_TOKEN && next();
     } catch (err) {
       console.error(err);
       res.status(401).json({ message: "Token is invalid" });
@@ -58,6 +54,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Controller function to get a specific flight by id
+router.get("/:id", async (req, res) => {
+  try {
+    const flight = await Flight.findById(req.params.id);
+    if (!flight) {
+      return res.status(404).send("Flight not found");
+    }
+    res.status(200).json(flight);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error retrieving flight");
+  }
+});
+
 // Controller function to define a route for creating a new flight
 router.post("/", verifyToken, async (req, res) => {
   try {
@@ -73,14 +83,18 @@ router.post("/", verifyToken, async (req, res) => {
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const flight = await Flight.findById(req.params.id);
-
     if (!flight) {
       return res.status(404).send("Flight not found");
     }
-
+    // update the flight data with the data sent in the request body
+    flight.flightNo = req.body.flightNo;
+    flight.from = req.body.from;
+    flight.to = req.body.to;
+    flight.date = req.body.date;
+    flight.price = req.body.price;
     flight.availableSeats = req.body.availableSeats;
-    const updatedFlight = await flight.save();
 
+    const updatedFlight = await flight.save();
     res.status(200).json(updatedFlight);
   } catch (err) {
     console.error(err);
